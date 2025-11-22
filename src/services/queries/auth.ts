@@ -67,12 +67,24 @@ export const useLoginMutation = () => {
         console.log('📝 Refresh token:', data.refresh?.substring(0, 30) + '...');
         console.log('👤 User:', data.user);
 
+        // Validate tokens exist before saving
+        if (!data.access || !data.refresh) {
+          console.error('❌ ERROR: Tokens are missing!', { access: data.access, refresh: data.refresh });
+          throw new Error('Login response missing access or refresh token');
+        }
+
+        if (!data.user) {
+          console.error('❌ ERROR: User data is missing!');
+          throw new Error('Login response missing user data');
+        }
+
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
         setAuth(data.access, data.refresh);
         setUser(data.user);
 
         console.log('💾 Tokens saved to localStorage and store');
+        console.log('🔍 Verify localStorage access_token:', localStorage.getItem('access_token')?.substring(0, 20) + '...');
       },
       onError: (error) => {
         console.error('❌ Login failed:', error.response?.data);
@@ -133,9 +145,17 @@ export const useProfileQuery = (): UseQueryResult<User> => {
         throw new Error('No user data available');
       }
 
+      // Check for token in store or localStorage (for race condition cases)
+      const token = accessToken || (typeof window !== 'undefined' ? localStorage.getItem('access_token') : null);
+
+      if (!token) {
+        console.error('❌ No access token available for profile fetch');
+        throw new Error('No access token available');
+      }
+
       // Backend mode: fetch from API
-      console.log('Fetching profile with token:', accessToken?.substring(0, 20) + '...');
-      const response = await authEndpoints.getProfile();
+      console.log('Fetching profile with token:', token.substring(0, 20) + '...');
+      const response = await authEndpoints.getProfile(token);
       console.log('Profile full response:', response.data);
 
       // Extract from nested data structure
@@ -145,7 +165,7 @@ export const useProfileQuery = (): UseQueryResult<User> => {
       return userData;
     },
     {
-      enabled: isAuthenticated && !!accessToken, // Only fetch when authenticated and have token
+      enabled: isAuthenticated || (typeof window !== 'undefined' && !!localStorage.getItem('access_token')), // Enable if authenticated OR has token in localStorage
       staleTime: 5 * 60 * 1000, // 5 minutes
       cacheTime: 10 * 60 * 1000, // 10 minutes
       retry: isFrontendOnlyMode ? 0 : 1, // Don't retry in frontend-only mode

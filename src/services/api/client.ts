@@ -62,10 +62,22 @@ apiClient.interceptors.response.use(
           refresh: refreshToken,
         });
 
-        console.log('✅ Token refresh successful');
-        localStorage.setItem('access_token', response.data.access);
-        apiClient.defaults.headers.Authorization = `Bearer ${response.data.access}`;
-        originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
+        console.log('✅ Token refresh successful, full response:', response.data);
+
+        // Extract from nested data structure (backend returns {success: true, data: {access: "..."}})
+        const responseData = response.data as any;
+        const newAccessToken = responseData.data?.access || responseData.access;
+
+        if (!newAccessToken) {
+          console.error('❌ No access token in refresh response:', response.data);
+          throw new Error('Refresh response missing access token');
+        }
+
+        console.log('🔄 New access token received:', newAccessToken.substring(0, 20) + '...');
+
+        localStorage.setItem('access_token', newAccessToken);
+        apiClient.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return apiClient(originalRequest);
       } catch (refreshError: any) {
