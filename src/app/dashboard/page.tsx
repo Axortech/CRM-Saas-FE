@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useLogoutMutation, useProfileQuery } from '@/services/queries/auth';
 import { LogoutOutlined } from '@ant-design/icons';
+import Sidebar from '@/components/shared/Sidebar';
 
 const { Title, Text } = Typography;
 
@@ -65,6 +66,7 @@ export default function DashboardPage() {
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ marginBottom: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
+            <Sidebar/>
             <Title level={2}>Welcome, {displayUser?.first_name}!</Title>
             <Text type="secondary">This is your CRM dashboard</Text>
           </div>
