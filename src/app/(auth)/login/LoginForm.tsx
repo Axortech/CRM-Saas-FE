@@ -21,6 +21,9 @@ export default function LoginForm() {
     try {
       await loginMutation.mutateAsync(values);
       message.success('Login successful!');
+      
+      // Small delay to ensure Zustand store is fully updated before redirect
+      await new Promise(resolve => setTimeout(resolve, 100));
       router.push('/dashboard');
     } catch (error: any) {
       const errorData = error.response?.data;

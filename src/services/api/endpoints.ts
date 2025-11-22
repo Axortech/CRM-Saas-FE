@@ -12,8 +12,10 @@ export const authEndpoints = {
   logout: () =>
     apiClient.post(API_ENDPOINTS.LOGOUT),
 
-  getProfile: () =>
-    apiClient.get<User>(API_ENDPOINTS.USER_PROFILE),
+  getProfile: (token?: string) =>
+    apiClient.get<User>(API_ENDPOINTS.USER_PROFILE, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined
+    }),
 
   refreshToken: (refresh: string) =>
     apiClient.post(API_ENDPOINTS.REFRESH_TOKEN, { refresh })
