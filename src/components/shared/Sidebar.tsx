@@ -15,7 +15,10 @@ import {
   BellOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined
+  UserOutlined,
+  ContactsOutlined,
+  FunnelPlotOutlined,
+  BankOutlined,
 } from '@ant-design/icons';
 
 interface SidebarProps {
@@ -38,14 +41,15 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
 
   const menuItems = [
     { icon: <HomeOutlined />, label: 'Dashboard', path: '/dashboard' },
+    { icon: <ContactsOutlined />, label: 'Contacts', path: '/contacts' },
+    { icon: <FunnelPlotOutlined />, label: 'Leads', path: '/leads' },
     { icon: <RocketOutlined />, label: 'Campaign', path: '/campaign' },
     { icon: <CalendarOutlined />, label: 'Calendar', path: '/calendar' },
-    { icon: <FileTextOutlined />, label: 'Documents', path: '/documents' },
-    { icon: <TeamOutlined />, label: 'Team', path: '/team' },
     { icon: <LineChartOutlined />, label: 'Analytics', path: '/analytics' },
   ];
 
   const bottomItems = [
+    { icon: <BankOutlined />, label: 'Organization', path: '/organization' },
     { icon: <BellOutlined />, label: 'Notifications', path: '/notifications' },
     { icon: <SettingOutlined />, label: 'Settings', path: '/settings' },
   ];
@@ -171,9 +175,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
       </div>
 
       {/* Main Menu Items */}
-      <div style={{ flex: 1, padding: '16px 0', overflowY: 'auto' }}>
+      <div style={{ flex: 1, padding: '16px 0', overflowY: collapsed ? 'hidden' : 'auto' }}>
         {menuItems.map((item, index) => {
-          const isActive = pathname === item.path;
+          const isActive = pathname === item.path || pathname.startsWith(item.path + '/');
           return (
             <Tooltip 
               key={index} 
@@ -246,7 +250,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
       {/* Bottom Menu Items */}
       <div style={{ padding: '16px 0', borderTop: '1px solid #f0f0f0' }}>
         {bottomItems.map((item, index) => {
-          const isActive = pathname === item.path;
+          const isActive = pathname === item.path || pathname.startsWith(item.path + '/');
           return (
             <Tooltip 
               key={index} 
