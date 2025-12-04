@@ -31,3 +31,25 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Logo background removal - removes white/light backgrounds */
+.logo-image {
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
+
+.logo-image img {
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
+
+/* Alternative: If multiply doesn't work well, use screen blend mode for dark backgrounds */
+@media (prefers-color-scheme: dark) {
+  .logo-image {
+    mix-blend-mode: screen;
+  }
+  
+  .logo-image img {
+    mix-blend-mode: screen;
+  }
+}

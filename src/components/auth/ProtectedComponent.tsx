@@ -131,3 +131,5 @@ export const PermissionSwitch: React.FC<PermissionSwitchProps> = ({
 
 export default ProtectedComponent;
 
+
+
