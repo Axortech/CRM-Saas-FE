@@ -85,3 +85,5 @@ export const DEFAULT_PERMISSIONS: Record<string, Record<Module, Permission[]>> =
   },
 };
 
+
+

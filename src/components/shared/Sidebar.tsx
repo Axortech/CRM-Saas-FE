@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { Tooltip, Avatar, Spin } from 'antd';
 import { useProfileQuery } from '@/services/queries/auth';
@@ -108,19 +109,30 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
               style={{
                 width: '32px',
                 height: '32px',
-                backgroundColor: '#000',
-                color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: 'bold',
+                position: 'relative',
+                overflow: 'hidden',
+                backgroundColor: 'transparent',
               }}
             >
-              In
+              <Image
+                src="/AxorCRM.png"
+                alt="AxorCRM Logo"
+                width={100}
+                height={100}
+                style={{
+                  objectFit: 'contain',
+                  mixBlendMode: 'multiply',
+                  backgroundColor: 'transparent',
+                }}
+                className="logo-image"
+                unoptimized
+              />
             </div>
-            <span style={{ fontSize: '18px', fontWeight: '600' }}>Influmo</span>
+            <span style={{ fontSize: '18px', fontWeight: '600' }}>AxorCRM</span>
           </div>
         )}
         {collapsed && (
@@ -128,17 +140,28 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
             style={{
               width: '32px',
               height: '32px',
-              backgroundColor: '#000',
-              color: '#fff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: 'bold',
+              position: 'relative',
+              overflow: 'hidden',
+              backgroundColor: 'transparent',
             }}
           >
-            In
+            <Image
+              src="/AxorCRM.png"
+              alt="AxorCRM Logo"
+              width={32}
+              height={32}
+              style={{
+                objectFit: 'contain',
+                mixBlendMode: 'multiply',
+                backgroundColor: 'transparent',
+              }}
+              className="logo-image"
+              unoptimized
+            />
           </div>
         )}
       </div>
